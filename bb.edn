@@ -1,0 +1,22 @@
+{:paths ["src" "resources"]
+ :deps  {dk.thinkcreate/bubble-config {:local/root "."}}
+ :tasks
+ {:init (do
+          (defn config []
+            (exec 'bubble-config.core/config))
+
+          (defn rem-args []
+            (if-let [rem (not-empty (drop-while (partial not= "--")
+                                                *command-line-args*))]
+              (rest rem)
+              *command-line-args*))
+
+          (defn exec-with-config
+            ([sym] (exec-with-config sym nil))
+            ([sym ks]
+             (let [exec-args (get-in (config) ks)]
+               (binding [*command-line-args* (rem-args)]
+                 (exec sym {:exec-args exec-args}))))))
+
+  config:print (exec 'bubble-config.core/print)
+  arg:prn      (exec-with-config 'clojure.core/prn)}}

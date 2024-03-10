@@ -1,0 +1,9 @@
+{:defaults {:a 0}
+ :dev      {:b 1}
+ :test     {:b 2}
+ :prod     {:b 3}
+
+ :bubble-config/root #merge [#ref [:defaults]
+                             #env {:dev  #ref [:dev]
+                                   :test #ref [:test]
+                                   :prod #ref [:prod]}]}
