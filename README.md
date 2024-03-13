@@ -65,6 +65,7 @@ Now when you have a lot of flags that also differ between, say, local developmen
 This is what Bubble Config allows you to do:
 
 ```clojure
+:deps  {io.github.eval/bubble-config {:git/sha "5588bbdb2ea6027729591ca79445b6a178c47e2f"}}
 :tasks {:init
          (do
            (defn config []
