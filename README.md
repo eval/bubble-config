@@ -7,7 +7,7 @@ An [aero](https://github.com/juxt/aero) powered config with environments for Clo
 ### CLI
 
 ``` shell
-export BBL_DEPS='{:deps {io.github.eval/bubble-config {:git/sha "5588bbdb2ea6027729591ca79445b6a178c47e2f"}}}'
+$ export BBL_DEPS='{:deps {io.github.eval/bubble-config {:git/sha "5588bbdb2ea6027729591ca79445b6a178c47e2f"}}}'
 
 # Babashka/Clojure commands side by side
 # a sample config
