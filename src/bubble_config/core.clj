@@ -4,6 +4,7 @@
             [aero.core :as aero]
             [babashka.cli :as cli]
             [bubble-config.util :as util :refer [whenp]]
+            [clojure.java.io :as io]
             [puget.printer :refer [pprint]]))
 
 (def defaults {:config  "config.edn"
@@ -84,8 +85,7 @@
 
 (defn sample
   [& _]
-  (println (slurp ((requiring-resolve 'clojure.java.io/resource)
-                   "sample.edn"))))
+  (println (slurp (io/resource "sample.edn"))))
 
 (defn- print-help [spec]
   (println

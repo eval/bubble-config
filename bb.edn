@@ -1,5 +1,4 @@
-{:paths ["src" "resources"]
- :deps  {dk.thinkcreate/bubble-config {:local/root "."}}
+{:deps {dk.thinkcreate/bubble-config {:local/root "."}}
  :tasks
  {:init (do
           (defn config []
