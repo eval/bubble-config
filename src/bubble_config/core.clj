@@ -30,7 +30,7 @@
    (read-config file nil))
   ([file opts]
    (binding [*envs-seen* (atom '())]
-     (let [result         (aero/read-config file opts)
+     (let [result         (aero/read-config (or (io/resource file) file) opts)
            available-envs (apply list (first @*envs-seen*))]
        (assoc result
               :bubble-config/available-envs available-envs)))))
