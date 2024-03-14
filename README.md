@@ -1,4 +1,4 @@
-# 🫧 Bubble Config 🫧
+# 🫧 Bubble C🫧nfig
 
 An [aero](https://github.com/juxt/aero) powered config with environments for Clojure and Babashka projects.
 
@@ -6,8 +6,8 @@ An [aero](https://github.com/juxt/aero) powered config with environments for Clo
 
 ### CLI
 
-``` shell
-$ export BBL_DEPS='{:deps {io.github.eval/bubble-config {:git/sha "5588bbdb2ea6027729591ca79445b6a178c47e2f"}}}'
+``` bash
+$ export BBL_DEPS='{:deps {io.github.eval/bubble-config {:git/sha "3056c306276dd435f48f29a7657a109d0e25a98f"}}}'
 
 # Babashka/Clojure commands side by side
 # a sample config
@@ -65,7 +65,7 @@ Now when you have a lot of flags that also differ between, say, local developmen
 This is what Bubble Config allows you to do:
 
 ```clojure
-:deps  {io.github.eval/bubble-config {:git/sha "5588bbdb2ea6027729591ca79445b6a178c47e2f"}}
+:deps  {io.github.eval/bubble-config {:git/sha "3056c306276dd435f48f29a7657a109d0e25a98f"}}
 :tasks {:init
          (do
            (defn config []
