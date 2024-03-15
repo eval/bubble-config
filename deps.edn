@@ -1,7 +1,16 @@
-{:paths ["src" "resources"]
- :deps  {aero/aero        {:git/url "https://github.com/juxt/aero"
-                           :git/sha "814b0006a1699e8149045e55c4e112e61b983fe9"}
-         org.babashka/cli {:mvn/version "0.8.58"}
-         babashka/fs      {:mvn/version "0.5.20"}
-         babashka/process {:mvn/version "0.5.22"}
-         mvxcvi/puget     {:mvn/version "1.3.4"}}}
+{:paths
+ ["src" "resources"]
+
+ :deps
+ {aero/aero        {:git/url "https://github.com/juxt/aero"
+                    :git/sha "814b0006a1699e8149045e55c4e112e61b983fe9"}
+  org.babashka/cli {:mvn/version "0.8.58"}
+  babashka/fs      {:mvn/version "0.5.20"}
+  babashka/process {:mvn/version "0.5.22"}
+  mvxcvi/puget     {:mvn/version "1.3.4"}}
+
+ :aliases
+ {:test {:extra-paths ["test"]
+         :extra-deps  {io.github.cognitect-labs/test-runner
+                       {:git/sha "7284cda41fb9edc0f3bc6b6185cfb7138fc8a023"}}
+         :exec-fn     cognitect.test-runner.api/test}}}

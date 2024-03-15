@@ -30,10 +30,10 @@
    (read-config file nil))
   ([file opts]
    (binding [*envs-seen* (atom '())]
-     (let [result         (aero/read-config (or (io/resource file) file) opts)
-           available-envs (apply list (first @*envs-seen*))]
-       (assoc result
-              :bubble-config/available-envs available-envs)))))
+     (let [result (aero/read-config file opts)
+           envs   (apply list (first @*envs-seen*))]
+       {:bubble-config/available-envs envs
+        :bubble-config/result         result}))))
 
 (defn- available-envs
   [{:keys [config] :as _bbl-config}]
@@ -68,17 +68,23 @@
                                      :bbl/env    {:alias  :bbl/e
                                                   :coerce :keyword}}}}
   ([] (config nil))
-  ([{env         :env        config :config
+  ([{env         :env
+     config      :config
      nsed-env    :bbl/env
-     nsed-config :bbl/config :as    cfg}]
+     nsed-config :bbl/config :as cfg}]
    #_(prn :args args :profile profile)
-   (let [{:keys [config]
-          :as   bbl-cfg} (bbl-config (assoc cfg :config (or config nsed-config)))
+   (let [config          (or nsed-config config)
+         config          (if (string? config)
+                           (or (io/resource config) config)
+                           config)
+         {:keys [config]
+          :as   bbl-cfg} (bbl-config (assoc cfg :config config))
          env             (current-env bbl-cfg (or nsed-env env))
-         {:bubble-config/keys [root available-envs] :as result}
+         {:bubble-config/keys [available-envs
+                               result]}
          (read-config config {:env env})]
      (assert-valid-env! env available-envs)
-     (with-meta (or root (dissoc result :bubble-config/available-envs))
+     (with-meta (or (:bubble-config/root result) result)
        {:bubble-config/available-envs available-envs
         :bubble-config/config-file    config
         :bubble-config/current-env    (or env (current-env bbl-cfg))}))))
