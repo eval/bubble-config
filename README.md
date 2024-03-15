@@ -79,7 +79,12 @@ The config will be read by [aero](https://github.com/juxt/aero) with additions:
   E.g. `#env{:dev {:env "dev"} :test {:env "test"}}`.  
   Though where in aero it's acceptable to provide an non-existing profile, for `#env` this will trigger an assert-exception.
 - if the config yields a map with key `:bubble-config/root` then that will be the result  
-  This to allow for scratchpad keys, e.g. `{:defaults {:a 1} :bubble-config/root #merge [#ref [:defaults] ,,,]}`. See also [the sample.edn](./resources/sample.edn).
+  This to allow for scratchpad keys, e.g.
+  ```clojure
+  {:defaults {:a 1}
+   :bubble-config/root #merge [#ref [:defaults] ,,,]}
+  ```
+  See also [the sample.edn](./resources/sample.edn).
 
 ### CLI
 
