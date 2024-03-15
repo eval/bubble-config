@@ -8,7 +8,7 @@ An [aero](https://github.com/juxt/aero) powered config with environments aimed a
 
 ## Rationale
 
-I wanted to make my Babashka tasks simpler. Instead of doing `bb some-task --flag1 val1 --flag2 val2`, this library allows you to do `bb some-task -e dev` and the right flags for the environment will be read from a config-file and passed to the task.
+I wanted to make my Babashka tasks simpler. Instead of doing variations of `bb some-task --flag1 val1 --flag2 val2` in development/test/production etc., this library allows you to do `bb some-task -e dev` and the right flags for the environment will be read from a config-file and passed to the task (while allowing overrides).
 
 ## Usage
 
@@ -35,7 +35,7 @@ Now when you have a lot of flags that also differ between, say, local developmen
 This is what Bubble Config allows you to do:
 
 ```clojure
-:deps  {io.github.eval/bubble-config {:git/sha "fd8a252aa49c83abb3aab1e523f749101e8c1a86"}}
+:deps  {io.github.eval/bubble-config {:git/sha "ac45fc05f889e3acfeaeb12e919908e6e42a1c66"}}
 :tasks {:init
          (do
            (defn config []
@@ -72,11 +72,24 @@ $ bb prn -e test -a 2
 
 So instead of having long commands that differ in every environment, `bb some-task` suffices everywhere. Switching between envs is easy, as is inspecting what the flags per environment look like.
 
+### config
+
+The config will be read by [aero](https://github.com/juxt/aero) with additions:
+- it has a `#env` tag-literal behaving similar to `#profile`  
+  E.g. `#env{:dev {:env "dev"} :test {:env "test"}}`.  
+  Though where in aero it's acceptable to provide an non-existing profile, for `#env` this will trigger an assert-exception.
+- if the config yields a map with key `:bubble-config/root` then that will be the result  
+  This to allow for scratchpad keys, e.g. `{:defaults {:a 1} :bubble-config/root #merge [#ref [:defaults] ,,,]}`. See also [the sample.edn](./resources/sample.edn).
 
 ### CLI
 
+A no-install way to see how the config is put together by pretty printing it using the `bubble-config.core/print` CLI:
+
+![Screenshot 2024-03-15 at 12 58 30](https://github.com/eval/bubble-config/assets/290596/ae7af76b-1ae1-4fb5-8bc0-cc9c1279bedb)
+
+
 ``` bash
-$ export BBL_DEPS='{:deps {io.github.eval/bubble-config {:git/sha "fd8a252aa49c83abb3aab1e523f749101e8c1a86"}}}'
+$ export BBL_DEPS='{:deps {io.github.eval/bubble-config {:git/sha "ac45fc05f889e3acfeaeb12e919908e6e42a1c66"}}}'
 
 # Babashka/Clojure commands side by side
 # a sample config
