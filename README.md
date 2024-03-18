@@ -1,6 +1,6 @@
 # 🫧 Bubble C🫧nfig
 
-An [aero](https://github.com/juxt/aero) powered config with environments aimed at Babashka tasks.
+An [aero](https://github.com/juxt/aero)-powered config with environments aimed at Babashka tasks.
 
 <p align="center">
 <a href="https://polar.sh/eval"><picture><source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=eval&label=Subscribe&darkmode"><img alt="Subscribe on Polar" src="https://polar.sh/embed/subscribe.svg?org=eval&label=Subscribe"></picture></a>
@@ -35,11 +35,11 @@ Now when you have a lot of flags that also differ between, say, local developmen
 This is what Bubble Config allows you to do:
 
 ```clojure
+;; config.edn
 :deps  {io.github.eval/bubble-config {:git/sha "ac45fc05f889e3acfeaeb12e919908e6e42a1c66"}}
 :tasks {:init
-         (do
-           (defn config []
-             (exec 'bubble-config.core/config)))
+         (defn config []
+           (exec 'bubble-config.core/config))
 
   prn (exec 'clojure.core/prn {:exec-args (config)})
 }
@@ -74,11 +74,17 @@ So instead of having long commands that differ in every environment, `bb some-ta
 
 ### config
 
-The config will be read by [aero](https://github.com/juxt/aero) with additions:
-- it has a `#env` tag-literal behaving similar to `#profile`  
-  E.g. `#env{:dev {:env "dev"} :test {:env "test"}}`.  
-  Though where in aero it's acceptable to provide an non-existing profile, for `#env` this will trigger an assert-exception.
-- if the config yields a map with key `:bubble-config/root` then that will be the result  
+The config will be read by [aero](https://github.com/juxt/aero) with the following additions/conventions:
+- the `#env` tag-literal
+  which is like `#profile`:  
+  ```clojure
+  #env{:dev  {:database-url "postgres://localhost:5432/app_dev"}
+       :test {:database-url "postgres://localhost:5432/app_test"}}
+  ```
+  Differences with `#profile`:
+  - In case no env is provided, the first env found in the config-file is assumed (aero uses `:default` as fallback).
+  - Providing an unknown `env` triggers an exception (aero's result would be `nil`).
+- if the config contains a key `:bubble-config/root`, then that will be the result  
   This to allow for scratchpad keys, e.g.
   ```clojure
   {:defaults {:a 1}
@@ -88,12 +94,13 @@ The config will be read by [aero](https://github.com/juxt/aero) with additions:
 
 ### CLI
 
-A no-install way to see how the config is put together by pretty printing it using the `bubble-config.core/print` CLI:
+Use the `bubble-config.core/print` CLI to see the config for an environment:
 
 ![Screenshot 2024-03-15 at 12 58 30](https://github.com/eval/bubble-config/assets/290596/ae7af76b-1ae1-4fb5-8bc0-cc9c1279bedb)
 
 
 ``` bash
+# Use this env-var in case you want to test it without a deps.edn file
 $ export BBL_DEPS='{:deps {io.github.eval/bubble-config {:git/sha "ac45fc05f889e3acfeaeb12e919908e6e42a1c66"}}}'
 
 # Babashka/Clojure commands side by side
